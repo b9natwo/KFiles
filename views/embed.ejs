@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= fileName %> - KrakenFiles Embed</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="/index.html" style="text-decoration: none;"><h1>KFiles</h1></a>
+        <label for="krakenLink">remove ads from KrakenFiles</label>
+        <h2 style="opacity: 45%;"><%= fileName %></h2>
+        <iframe id="krakenIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
+        <form id="dl-form" action="/download/<%= id %>" method="POST">
+            <input type="hidden" name="token" id="dl-token" value="<%= token %>"/>
+        </form>
+        <button id="downloadButton">Download</button>
+    </div>
+    <footer>
+        <p><img src="https://lh6.googleusercontent.com/proxy/qK7yaw-uQHuTiF9VmvSYr-eFONdi_QiwV7q8rQKazQfWBeqktok1LS-97udMAz3bt7gXaooQxYDOArJHIp06KyqB9uAmtVhgdZrpFZSxVwSsiQ" style="height: 50%; width: 50%;"></p>
+        <a href="https://github.com/b9natwo/KFiles" style="font-weight: bold; font-style: italic; opacity: 50%;">b9na 🎸</a>
+    </footer>
+    <script src="/script.js"></script>
+    <script>
+        const id = "<%= id %>";
+        document.getElementById('krakenIframe').src = `https://krakenfiles.com/embed-audio/${id}?autoplay=false&link=true`;
+        document.getElementById('dl-form').action = `https://krakenfiles.com/download/${id}`;
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            submitForm();
+        });
+
+        function submitForm() {
+            const form = document.getElementById('dl-form');
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    const link = document.createElement('a');
+                    link.href = data.url;
+                    link.download = ''; // Optional: specify a filename here
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert('Error retrieving download URL');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending the download request:', error);
+                alert('Error sending the download request');
+            });
+        }
+    </script>
+</body>
+</html>
