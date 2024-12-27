@@ -4,6 +4,8 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const app = express();
 
+const noAlbumArt = 'https://muzyka.vercel.app/img/album.png';
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // To handle form submissions
 
@@ -25,6 +27,10 @@ app.get('/view/:id', async (req, res) => {
 
         // Extract the file name
         const fileName = $('.coin-name').text().trim();
+
+        // Extract the cover art URL
+        const coverArtElement = $('img[src*="cover.png"]').attr('src');
+        const coverArtUrl = coverArtElement ? `https:${coverArtElement}` : noAlbumArt;
 
         res.render('embed', { id: id, token: token, fileName: fileName });
     } catch (error) {
