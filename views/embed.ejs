@@ -1,62 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KFiles - <%= fileName %></title>
-    <link rel="stylesheet" href="/styles.css">
+    <title><%= fileName %></title>
+    <link rel="icon" type="image/x-icon" href="https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/favicon.png?v=1732064787136">
+    <link rel="stylesheet" href="/public/styles.css">
+    
+    <!-- Meta Tags for Social Sharing -->
+    <meta name="description" content="Download and listen to audio files with KFiles. Easily manage your files and enjoy seamless audio playback.">
+    <meta property="og:title" content="KFiles - <%= fileName %>">
+    <meta property="og:description" content="Download and listen to audio files with KFiles. Easily manage your files and enjoy seamless audio playback.">
+    <meta property="og:image" content="<%= coverArtUrl || 'default-image-url.png' %>">
+    <meta property="og:url" id="url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KFiles - <%= fileName %>">
+    <meta name="twitter:description" content="Download and listen to audio files with KFiles. Easily manage your files and enjoy seamless audio playback.">
+    <meta name="twitter:image" content="<%= coverArtUrl || 'default-image-url.png' %>">
+    
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0d141d;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #101924;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 1.5rem;
+            color: #f2f2f2;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        h2 {
+            color: gray;
+            text-decoration: none;
+            font-weight: lighter;
+            opacity: 0.5;
+        }
+
+        .cover-art {
+            max-width: 85%;
+            height: auto;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cover-art:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.9);
+        }
+
+        #customAudioPlayer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+
+        .time-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-bottom: 10px;
+            color: #cccccc;
+        }
+
+        input[type="range"] {
+            width: 80%;
+            margin: 0 10px;
+            background-color: #6a89ff;
+        }
+
+        button {
+            background-color: #6a89ff;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <a href="/index.html" style="text-decoration: none;"><h1>KFiles</h1></a>
-        <label for="krakenLink">remove ads from KrakenFiles</label>
-        <h2 style="opacity: 45%;"><%= fileName %></h2>
-        <iframe id="krakenIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
-        <form id="dl-form" action="/download/<%= id %>" method="POST">
-            <input type="hidden" name="token" id="dl-token" value="<%= token %>"/>
-        </form>
-        <button id="downloadButton">Download</button>
-    </div>
-    <footer>
-        <p><img src="https://lh6.googleusercontent.com/proxy/qK7yaw-uQHuTiF9VmvSYr-eFONdi_QiwV7q8rQKazQfWBeqktok1LS-97udMAz3bt7gXaooQxYDOArJHIp06KyqB9uAmtVhgdZrpFZSxVwSsiQ" style="height: 50%; width: 50%;"></p>
-        <a href="https://github.com/b9natwo/KFiles" style="font-weight: bold; font-style: italic; opacity: 50%;">b9na 🎸</a>
-    </footer>
-    <script src="/script.js"></script>
-    <script>
-        const id = "<%= id %>";
-        document.getElementById('krakenIframe').src = `https://krakenfiles.com/embed-audio/${id}?autoplay=false&link=true`;
-        document.getElementById('dl-form').action = `https://krakenfiles.com/download/${id}`;
+        <a href="/" style="text-decoration: none;">
+            <h1>KFiles</h1>
+        </a>
+        <a id="FileName" style="text-decoration: none;">
+            <h2><%= fileName %></h2>
+        </a>
 
-        document.getElementById('downloadButton').addEventListener('click', function() {
-            submitForm();
+        <img src="<%= coverArtUrl %>" alt="<%= fileName %> Cover Art" class="cover-art" onerror="this.onerror=null; this.src='https://muzyka.vercel.app/img/album.png';">
+
+        <% if (source === 'kraken') { %>
+            <iframe id="fileIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
+            <!-- <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST"> -->
+            <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
+            <button type="submit" class="download-button" onclick="window.alert('KrakenFiles has patched the old download method. Please download from the original site until it is fixed (11/21).')">Download</button>
+            <!-- </form> -->
+        <% } else if (source === 'plwcse') { %>
+            <div id="customAudioPlayer">
+                <audio id="fileAudio" src="https://api.plwcse.top/api/download/<%= id %>" preload="none"></audio>
+                <div class="time-container">
+                    <span id="currentTime">0:00</span>
+                    <input type="range" id="seekBar" value="0">
+                    <span id="duration">0:00</span>
+                </div>
+                <button id="playPauseBtn">
+                    <img id="playPauseIcon" src="https://i.ibb.co/F0kgnJV/play.png" alt="Play">
+                </button>
+            </div>
+            <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST">
+                <button type="submit" class="download-button">Download</button>
+            </form>
+        <% } %>
+    </div>
+
+    <script>
+        document.querySelector('#url').setAttribute('content', location.href)
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const source = '<%= source %>'; // Source type: 'kraken' or 'plwcse'
+            const id = '<%= id %>'; // File identifier
+            const fileNameLink = document.getElementById('FileName');
+
+            if (source === 'kraken') {
+                // Dynamically set the link for Kraken
+                fileNameLink.href = `https://krakenfiles.com/view/${id}/file.html`; // Kraken link structure
+
+                // Optionally update the iframe for Kraken audio
+                const iframe = document.getElementById('fileIframe');
+                if (iframe) {
+                    iframe.src = `https://krakenfiles.com/embed-audio/${id}/?autoplay=false`;
+                }
+            }
+
+            if (source === 'plwcse') {
+                setupAudioPlayer(id);
+            }
         });
 
-        function submitForm() {
-            const form = document.getElementById('dl-form');
-            const formData = new FormData(form);
+        function setupAudioPlayer(id) {
+            const audio = document.getElementById('fileAudio');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const seekBar = document.getElementById('seekBar');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationEl = document.getElementById('duration');
+            const fileNameLink = document.getElementById('FileName');
 
-            fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.url) {
-                    const link = document.createElement('a');
-                    link.href = data.url;
-                    link.download = ''; // Optional: specify a filename here
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } else {
-                    alert('Error retrieving download URL');
-                }
-            })
-            .catch(error => {
-                console.error('Error sending the download request:', error);
-                alert('Error sending the download request');
+            fileNameLink.href = `https://plwcse.top/f/${id}`;
+
+            audio.addEventListener('loadedmetadata', () => {
+                seekBar.max = audio.duration;
+                durationEl.textContent = formatTime(audio.duration);
             });
+
+            audio.addEventListener('timeupdate', () => {
+                seekBar.value = audio.currentTime;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            });
+
+            seekBar.addEventListener('input', () => {
+                audio.currentTime = seekBar.value;
+                currentTimeEl.textContent = formatTime(seekBar.value);
+            });
+
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play()
+                        .then(() => {
+                            playPauseIcon.src = 'https://i.ibb.co/ZxyTnGs/pause.png';
+                        })
+                        .catch(err => {
+                            console.error("Playback failed: ", err);
+                            alert("Playback failed. Try reloading the page.");
+                        });
+                } else {
+                    audio.pause();
+                    playPauseIcon.src = 'https://i.ibb.co/F0kgnJV/play.png';
+                }
+            });
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        }
+
+        function onSubmitCaptcha(token) {
+            document.getElementById('dl-token').value = token;
+            document.getElementById('dl-form').submit();
         }
     </script>
 </body>
+
 </html>
