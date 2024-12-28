@@ -7,7 +7,7 @@ const app = express();
 const noAlbumArt = 'https://muzyka.vercel.app/img/album.png';
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true })); // To handle form submissions
+app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
@@ -22,13 +22,10 @@ app.get('/view/:id', async (req, res) => {
         const html = response.data;
         const $ = cheerio.load(html);
 
-        // Extract the token
         const token = $('input[name="token"]').val();
 
-        // Extract the file name
         const fileName = $('.coin-name').text().trim();
 
-        // Extract the cover art URL
         const coverArtElement = $('img[src*="cover.png"]').attr('src');
         const coverArtUrl = coverArtElement ? `https:${coverArtElement}` : noAlbumArt;
 
