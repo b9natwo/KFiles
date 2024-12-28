@@ -153,15 +153,13 @@
         document.querySelector('#url').setAttribute('content', location.href)
 
         document.addEventListener('DOMContentLoaded', () => {
-            const source = '<%= source %>'; // Source type: 'kraken' or 'plwcse'
-            const id = '<%= id %>'; // File identifier
+            const source = '<%= source %>';
+            const id = '<%= id %>';
             const fileNameLink = document.getElementById('FileName');
 
             if (source === 'kraken') {
-                // Dynamically set the link for Kraken
-                fileNameLink.href = `https://krakenfiles.com/view/${id}/file.html`; // Kraken link structure
+                fileNameLink.href = `https://krakenfiles.com/view/${id}/file.html`;
 
-                // Optionally update the iframe for Kraken audio
                 const iframe = document.getElementById('fileIframe');
                 if (iframe) {
                     iframe.src = `https://krakenfiles.com/embed-audio/${id}/?autoplay=false`;
