@@ -127,11 +127,10 @@
 
         <% if (source === 'kraken') { %>
             <iframe id="fileIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
-            <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST">
-                <div class="g-recaptcha" data-sitekey="6LeUU8YqAAAAAAch8ryi6TuMU6Euahqdn7Guf3_z"></div>
-                <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
-                <button type="submit" class="download-button">Download</button>
-            </form>
+            <!-- <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST"> -->
+            <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
+            <button type="submit" class="download-button" onclick="window.alert('KrakenFiles has patched the old download method. Please download from the original site until it is fixed (11/21).')">Download</button>
+            <!-- </form> -->
         <% } else if (source === 'plwcse') { %>
             <div id="customAudioPlayer">
                 <audio id="fileAudio" src="https://api.plwcse.top/api/download/<%= id %>" preload="none"></audio>
@@ -141,7 +140,7 @@
                     <span id="duration">0:00</span>
                 </div>
                 <button id="playPauseBtn">
-                    <img id="playPauseIcon" src="https://i.ibb.co/F0kgnJV/play.png" alt="Play">
+                    <img id="playPauseIcon" src="https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/play.png?v=1736920741078" alt="Play">
                 </button>
             </div>
             <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST">
@@ -204,7 +203,7 @@
                 if (audio.paused) {
                     audio.play()
                         .then(() => {
-                            playPauseIcon.src = 'https://i.ibb.co/ZxyTnGs/pause.png';
+                            playPauseIcon.src = 'https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/pause.png?v=1736920797042';
                         })
                         .catch(err => {
                             console.error("Playback failed: ", err);
@@ -212,7 +211,7 @@
                         });
                 } else {
                     audio.pause();
-                    playPauseIcon.src = 'https://i.ibb.co/F0kgnJV/play.png';
+                    playPauseIcon.src = 'https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/play.png?v=1736920741078';
                 }
             });
         }
