@@ -13,13 +13,12 @@ const noAlbumArt = 'https://muzyka.vercel.app/img/album.png';
 
 app.use(express.urlencoded({ extended: true }));
 
-// Set the view engine and views directory
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Assuming you have a 'views' folder
+app.set('views', path.join(__dirname, 'views')); 
 
 // Define routes
 app.get('/', (req, res) => {
-    res.render('index'); // Render the index.ejs file
+    res.render('index'); 
 });
 
 app.get('/view/:id', async (req, res) => {
@@ -88,7 +87,7 @@ app.post('/download/:source/:id', async (req, res) => {
         if (source === 'kraken') {
             // reCAPTCHA Validation
             const recaptchaResponse = await axios.post(
-                `https://www.google.com/recaptcha/api/siteverify`, // Use siteverify endpoint
+                `https://www.google.com/recaptcha/api/siteverify`, 
                 new URLSearchParams({
                     secret: RECAPTCHA_SECRET,
                     response: recaptchaToken,
