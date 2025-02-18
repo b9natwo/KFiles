@@ -127,10 +127,11 @@
 
         <% if (source === 'kraken') { %>
             <iframe id="fileIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
-            <!-- <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST"> -->
-            <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
-            <button type="submit" class="download-button" onclick="window.alert('KrakenFiles has patched the old download method. Please download from the original site until it is fixed (11/21).')">Download</button>
-            <!-- </form> -->
+            <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST">
+                <div class="g-recaptcha" data-sitekey="6LeUU8YqAAAAAAch8ryi6TuMU6Euahqdn7Guf3_z"></div>
+                <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
+                <button type="submit" class="download-button">Download</button>
+            </form>
         <% } else if (source === 'plwcse') { %>
             <div id="customAudioPlayer">
                 <audio id="fileAudio" src="https://api.plwcse.top/api/download/<%= id %>" preload="none"></audio>
@@ -153,13 +154,15 @@
         document.querySelector('#url').setAttribute('content', location.href)
 
         document.addEventListener('DOMContentLoaded', () => {
-            const source = '<%= source %>';
-            const id = '<%= id %>';
+            const source = '<%= source %>'; // Source type: 'kraken' or 'plwcse'
+            const id = '<%= id %>'; // File identifier
             const fileNameLink = document.getElementById('FileName');
 
             if (source === 'kraken') {
-                fileNameLink.href = `https://krakenfiles.com/view/${id}/file.html`;
+                // Dynamically set the link for Kraken
+                fileNameLink.href = `https://krakenfiles.com/view/${id}/file.html`; // Kraken link structure
 
+                // Optionally update the iframe for Kraken audio
                 const iframe = document.getElementById('fileIframe');
                 if (iframe) {
                     iframe.src = `https://krakenfiles.com/embed-audio/${id}/?autoplay=false`;
