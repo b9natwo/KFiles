@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Define routes
 app.get('/', (req, res) => {
-    res.render('index'); 
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/view/:id', async (req, res) => {
