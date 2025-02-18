@@ -127,5 +127,5 @@ app.post('/download/:source/:id', async (req, res) => {
 });
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`KFiles is online: http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
