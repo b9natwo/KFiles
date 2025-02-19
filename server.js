@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 
 //  CORS Middleware (important for Vercel, especially if your frontend is on a different domain)
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Adjust '*' to your frontend's origin in production (e.g., 'https://your-frontend-domain.com')
+    res.setHeader('Access-Control-Allow-Origin', 'https://kfiles.glitch.me'); // Adjust '*' to your frontend's origin in production (e.g., 'https://your-frontend-domain.com')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST'); // Allow only GET and POST for security
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
