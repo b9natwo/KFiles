@@ -7,7 +7,6 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "2captcha": "^3.0.5-2",
         "axios": "^1.7.2",
         "cheerio": "^1.0.0-rc.12",
         "ejs": "^3.1.10",
