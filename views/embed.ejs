@@ -127,20 +127,20 @@
 
         <% if (source === 'kraken') { %>
             <iframe id="fileIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
-            <!-- <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST"> -->
             <input type="hidden" name="token" id="dl-token" value="<%= token %>" />
-            <button type="submit" class="download-button" onclick="window.alert('KrakenFiles has patched the old download method. Please download from the original site until it is fixed (11/21).')">Download</button>
-            <!-- </form> -->
+            <button type="submit" class="download-button" style="color: white;" onClick="promptMessage()">Download</button>
+                
+            </form>
         <% } else if (source === 'plwcse') { %>
             <div id="customAudioPlayer">
-                <audio id="fileAudio" src="https://api.plwcse.top/api/download/<%= id %>" preload="none"></audio>
+                <audio id="fileAudio" src="https://api.pillowcase.su/api/download/<%= id %>" preload="none"></audio>
                 <div class="time-container">
                     <span id="currentTime">0:00</span>
                     <input type="range" id="seekBar" value="0">
                     <span id="duration">0:00</span>
                 </div>
                 <button id="playPauseBtn">
-                    <img id="playPauseIcon" src="https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/play.png?v=1736920741078" alt="Play">
+                    <img id="playPauseIcon" src="https://i.ibb.co/F0kgnJV/play.png" alt="Play">
                 </button>
             </div>
             <form id="dl-form" action="/download/<%= source %>/<%= id %>" method="POST">
@@ -172,6 +172,10 @@
                 setupAudioPlayer(id);
             }
         });
+      
+        function promptMessage() {
+          window.alert("KrakenFiles has patched the old download method as of November 21, 2024. Help support KFiles and contribute to the project here: https://github.com/b9natwo/kfiles")
+        }
 
         function setupAudioPlayer(id) {
             const audio = document.getElementById('fileAudio');
@@ -182,7 +186,7 @@
             const durationEl = document.getElementById('duration');
             const fileNameLink = document.getElementById('FileName');
 
-            fileNameLink.href = `https://plwcse.top/f/${id}`;
+            fileNameLink.href = `https://pillowcase.su/f/${id}`;
 
             audio.addEventListener('loadedmetadata', () => {
                 seekBar.max = audio.duration;
@@ -203,7 +207,7 @@
                 if (audio.paused) {
                     audio.play()
                         .then(() => {
-                            playPauseIcon.src = 'https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/pause.png?v=1736920797042';
+                            playPauseIcon.src = 'https://i.ibb.co/ZxyTnGs/pause.png';
                         })
                         .catch(err => {
                             console.error("Playback failed: ", err);
@@ -211,7 +215,7 @@
                         });
                 } else {
                     audio.pause();
-                    playPauseIcon.src = 'https://cdn.glitch.global/3b8f9c2c-6493-4a72-b4e9-aaa0d24a1d65/play.png?v=1736920741078';
+                    playPauseIcon.src = 'https://i.ibb.co/F0kgnJV/play.png';
                 }
             });
         }
