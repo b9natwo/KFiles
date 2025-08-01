@@ -8,10 +8,12 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     const krakenRegex = /krakenfiles\.com\/view\/([a-zA-Z0-9]+)\/file\.html/;
     const plwcseRegex = /plwcse\.top\/f\/([a-zA-Z0-9]+)/;
     const pillowcaseRegex = /pillowcase\.su\/f\/([a-zA-Z0-9]+)/;
+    const pillowsRegex = /pillows\.su\/f\/([a-zA-Z0-9]+)/;
     
     const krakenMatch = fileLink.match(krakenRegex);
     const plwcseMatch = fileLink.match(plwcseRegex);
     const pillowcaseMatch = fileLink.match(pillowcaseRegex)
+    const pillowsMatch = fileLink.match(pillowsRegex)
     
     let id, shareLink;
     if (krakenMatch && krakenMatch[1]) {
@@ -22,6 +24,9 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
         shareLink = `${window.location.origin}/f/${id}`;
     } else if (pillowcaseMatch && pillowcaseMatch[1]) {
         id = pillowcaseMatch[1];
+        shareLink = `${window.location.origin}/f/${id}`;
+    } else if (pillowsMatch && pillowsMatch[1]) {
+        id = pillowsMatch[1];
         shareLink = `${window.location.origin}/f/${id}`;
     } else {
         alert('Invalid link');
