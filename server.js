@@ -60,7 +60,7 @@ app.get('/view/:id', async (req, res) => {
 app.get('/f/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const response = await axios.get(`https://pillowcase.su/f/${id}`);
+        const response = await axios.get(`https://pillows.su/f/${id}`);
         const html = response.data;
         const $ = cheerio.load(html);
 
@@ -68,7 +68,7 @@ app.get('/f/:id', async (req, res) => {
         const fileName = $('span[data-marqueeck-child]').text().trim();
 
         // Construct the cover art URL
-        const coverArtUrl = `https://api.pillowcase.su/api/cover/${id}.webp`;
+        const coverArtUrl = `https://api.pillows.su/api/cover/${id}.webp`;
 
         res.render('embed', { id: id, token: null, fileName: fileName, coverArtUrl: coverArtUrl, audioUrl: null, source: 'plwcse' });
     } catch (error) {
@@ -86,7 +86,7 @@ app.post('/download/:source/:id', async (req, res) => {
     if (source === 'kraken') {
         url = `https://krakenfiles.com/download/${id}`;
     } else if (source === 'plwcse') {
-        url = `https://api.pillowcase.su/api/download/${id}`;
+        url = `https://api.pillows.su/api/download/${id}`;
     } else {
         return res.status(400).send('Invalid source');
     }
