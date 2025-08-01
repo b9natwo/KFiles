@@ -72,8 +72,8 @@ app.get('/f/:id', async (req, res) => {
 
         res.render('embed', { id: id, token: null, fileName: fileName, coverArtUrl: coverArtUrl, audioUrl: null, source: 'plwcse' });
     } catch (error) {
-        console.error('Error fetching the pillowcase.su page:', error);
-        res.status(500).send('Error fetching the pillowcase.su page');
+        console.error('Error fetching the pillows.su page:', error);
+        res.status(500).send('Error fetching the pillows.su page');
     }
 });
 
